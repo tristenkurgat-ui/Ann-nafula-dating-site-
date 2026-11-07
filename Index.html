@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ann Nafula G · Dating Site</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================================
+           GLOBAL RESET & BASE
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f9f5f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ============================================================
+           PAGE CONTAINER (router)
+           ============================================================ */
+        .page {
+            display: none;
+            flex: 1;
+        }
+
+        .page.active {
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 3rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* ============================================================
+           SHARED TOP BAR
+           ============================================================ */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-area h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: #4a2c2a;
+            line-height: 1.2;
+        }
+
+        .logo-area h1 i {
+            color: #d45b6b;
+            margin-right: 8px;
+            font-size: 1.8rem;
+        }
+
+        .logo-area .subhead {
+            font-size: 0.9rem;
+            color: #9e6b6b;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        /* ============================================================
+           SHARED BUTTONS
+           ============================================================ */
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid #e6d7d2;
+            padding: 0.65rem 1.3rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #4a2c2a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .icon-btn i {
+            font-size: 1.1rem;
+            color: #b3566b;
+        }
+
+        .icon-btn:hover {
+            background: #fceaea;
+            border-color: #d45b6b;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 14px rgba(212, 91, 107, 0.12);
+        }
+
+        .icon-btn.register-btn {
+            background: #d45b6b;
+            border: 1px solid #d45b6b;
+            color: white;
+        }
+
+        .icon-btn.register-btn i {
+            color: white;
+        }
+
+        .icon-btn.register-btn:hover {
+            background: #b84455;
+            border-color: #b84455;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid #e6d7d2;
+            padding: 0.55rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #4a2c2a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .back-btn i {
+            color: #b3566b;
+        }
+
+        .back-btn:hover {
+            background: #fceaea;
+            border-color: #d45b6b;
+            transform: translateY(-1px);
+        }
+
+        /* ============================================================
+           PAGE 1: HOME
+           ============================================================ */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0 3rem;
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #2e1c1a;
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 2px 10px rgba(212, 91, 107, 0.08);
+        }
+
+        .hero-title span {
+            color: #d45b6b;
+            display: inline-block;
+        }
+
+        .hero-sub {
+            font-size: 1.25rem;
+            color: #7a5a5a;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            max-width: 600px;
+            border-bottom: 2px dotted #f0d9d9;
+            padding-bottom: 0.5rem;
+        }
+
+        .couple-photo {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto 1.5rem;
+            border-radius: 36px;
+            overflow: hidden;
+            box-shadow: 0 25px 40px -12px rgba(74, 44, 42, 0.25);
+        }
+
+        .couple-photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 16 / 9;
+        }
+
+        .couple-caption {
+            font-size: 1rem;
+            color: #8f6b6b;
+            margin-top: 0.5rem;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .couple-caption i {
+            color: #d45b6b;
+        }
+
+        .register-card {
+            background: white;
+            max-width: 580px;
+            margin: 2.5rem auto 1rem;
+            padding: 2rem 2.2rem;
+            border-radius: 40px;
+            box-shadow: 0 18px 35px -10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f1e2de;
+            text-align: center;
+        }
+
+        .register-card h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #2e1c1a;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .register-card h2 i {
+            color: #d45b6b;
+            font-size: 1.5rem;
+        }
+
+        .register-card p {
+            color: #7a5a5a;
+            margin-bottom: 1.8rem;
+            font-size: 0.98rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            background: #fefaf9;
+            border: 1.5px solid #eedbd6;
+            border-radius: 60px;
+            padding: 0.2rem 1.2rem;
+            transition: 0.2s;
+        }
+
+        .input-field:focus-within {
+            border-color: #d45b6b;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(212, 91, 107, 0.08);
+        }
+
+        .input-field i {
+            color: #b98a8a;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .input-field input,
+        .input-field select {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 0.85rem 0.5rem;
+            font-size: 1rem;
+            color: #2e1c1a;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .input-field input::placeholder {
+            color: #b29494;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: #d45b6b;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 60px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 18px rgba(212, 91, 107, 0.3);
+            margin-bottom: 1.2rem;
+            font-family: inherit;
+            text-decoration: none;
+        }
+
+        .btn-primary i {
+            font-size: 1.2rem;
+        }
+
+        .btn-primary:hover {
+            background: #b84455;
+            box-shadow: 0 10px 22px rgba(212, 91, 107, 0.4);
+            transform: scale(1.01);
+        }
+
+        .login-redirect {
+            font-size: 0.95rem;
+            color: #7a5a5a;
+        }
+
+        .login-redirect a {
+            color: #d45b6b;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .login-redirect a:hover {
+            border-bottom-color: #d45b6b;
+        }
+
+        .demo-hint {
+            font-size: 0.78rem;
+            color: #bb9e9e;
+            margin-top: 1rem;
+        }
+
+        /* ============================================================
+           PAGE 2: PROFILE
+           ============================================================ */
+        .profile-card {
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 18px 35px -10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f1e2de;
+            padding: 2.5rem 2.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2.2rem;
+        }
+
+        .profile-header .avatar-icon {
+            width: 80px;
+            height: 80px;
+            background: #fceaea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            border: 2px solid #f0d9d9;
+        }
+
+        .profile-header .avatar-icon i {
+            font-size: 2.4rem;
+            color: #d45b6b;
+        }
+
+        .profile-header h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #2e1c1a;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+
+        .profile-header p {
+            font-size: 1rem;
+            color: #8f6b6b;
+            margin-top: 0.6rem;
+        }
+
+        .profile-header p i {
+            color: #d45b6b;
+            margin-right: 6px;
+        }
+
+        .details-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-row label {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #4a2c2a;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row label i {
+            color: #d45b6b;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .validation-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #a18181;
+            margin-top: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #fef7f5;
+            padding: 0.6rem 1rem;
+            border-radius: 50px;
+            border: 1px dashed #f0d9d9;
+        }
+
+        .validation-note i {
+            color: #d45b6b;
+        }
+
+        /* ============================================================
+           PAGE 3: PACKAGES
+           ============================================================ */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2e1c1a;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header h2 span {
+            color: #d45b6b;
+        }
+
+        .page-header p {
+            font-size: 1.05rem;
+            color: #8f6b6b;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .page-header p i {
+            color: #d45b6b;
+            margin: 0 4px;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 36px;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 18px 35px -10px rgba(0, 0, 0, 0.08);
+            border: 1.5px solid #f1e2de;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 45px -12px rgba(212, 91, 107, 0.18);
+            border-color: #f0d0d0;
+        }
+
+        .package-card.popular {
+            border: 2px solid #d45b6b;
+            background: #fffbfb;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 1.2rem;
+            right: -2.2rem;
+            background: #d45b6b;
+            color: white;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            padding: 0.35rem 2.8rem;
+            transform: rotate(45deg);
+            text-transform: uppercase;
+            box-shadow: 0 3px 10px rgba(212, 91, 107, 0.3);
+        }
+
+        .package-icon {
+            width: 60px;
+            height: 60px;
+            background: #fceaea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            border: 1.5px solid #f0d9d9;
+        }
+
+        .package-icon i {
+            font-size: 1.6rem;
+            color: #d45b6b;
+        }
+
+        .package-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2e1c1a;
+            margin-bottom: 0.2rem;
+        }
+
+        .package-desc {
+            font-size: 0.9rem;
+            color: #9e7a7a;
+            margin-bottom: 1.2rem;
+        }
+
+        .package-price {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 0.3rem;
+        }
+
+        .package-price .currency {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #d45b6b;
+        }
+
+        .package-price .amount {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #2e1c1a;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .package-price .period {
+            font-size: 0.95rem;
+            color: #9e7a7a;
+            font-weight: 500;
+        }
+
+        .package-billing {
+            font-size: 0.82rem;
+            color: #b29494;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px dashed #f0d9d9;
+        }
+
+        .features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.8rem;
+            flex: 1;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.93rem;
+            color: #4a2c2a;
+        }
+
+        .features-list li i {
+            color: #d45b6b;
+            font-size: 0.85rem;
+            width: 20px;
+            height: 20px;
+            background: #fef0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .btn-select {
+            background: white;
+            border: 1.5px solid #d45b6b;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #d45b6b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-select i {
+            font-size: 1.05rem;
+        }
+
+        .btn-select:hover {
+            background: #fceaea;
+            transform: scale(1.01);
+        }
+
+        .package-card.popular .btn-select {
+            background: #d45b6b;
+            border-color: #d45b6b;
+            color: white;
+            box-shadow: 0 8px 18px rgba(212, 91, 107, 0.3);
+        }
+
+        .package-card.popular .btn-select:hover {
+            background: #b84455;
+            box-shadow: 0 10px 22px rgba(212, 91, 107, 0.4);
+        }
+
+        .trust-note {
+            text-align: center;
+            font-size: 0.88rem;
+            color: #a18181;
+            background: #fef7f5;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            border: 1px dashed #f0d9d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .trust-note i {
+            color: #d45b6b;
+        }
+
+        /* ============================================================
+           PAGE 4: PAYMENT
+           ============================================================ */
+        .payment-card {
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 18px 35px -10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f1e2de;
+            padding: 2.5rem 2.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .payment-header .mpesa-icon {
+            width: 80px;
+            height: 80px;
+            background: #e8f5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            border: 2px solid #c8e6c9;
+        }
+
+        .payment-header .mpesa-icon i {
+            font-size: 2.4rem;
+            color: #2e7d32;
+        }
+
+        .payment-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2e1c1a;
+            margin-bottom: 0.3rem;
+        }
+
+        .payment-header p {
+            font-size: 0.95rem;
+            color: #8f6b6b;
+        }
+
+        .payment-summary {
+            background: #fefaf9;
+            border: 1.5px solid #eedbd6;
+            border-radius: 24px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: #9e7a7a;
+        }
+
+        .summary-plan {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2e1c1a;
+        }
+
+        .summary-amount {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #d45b6b;
+            letter-spacing: -0.5px;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .input-field .prefix {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a2c2a;
+            padding-right: 8px;
+            border-right: 1px solid #eedbd6;
+            margin-right: 8px;
+        }
+
+        .btn-pay {
+            background: #2e7d32;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 60px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 18px rgba(46, 125, 50, 0.3);
+            margin-top: 0.5rem;
+            font-family: inherit;
+        }
+
+        .btn-pay i {
+            font-size: 1.2rem;
+        }
+
+        .btn-pay:hover {
+            background: #1b5e20;
+            box-shadow: 0 10px 22px rgba(46, 125, 50, 0.4);
+            transform: scale(1.01);
+        }
+
+        .btn-pay:disabled {
+            background: #a5d6a7;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .status-message {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 0.9rem 1.2rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .status-message.show {
+            display: flex;
+        }
+
+        .status-message.success {
+            background: #e8f5e9;
+            color: #1b5e20;
+            border: 1px solid #a5d6a7;
+        }
+
+        .status-message.error {
+            background: #fdecea;
+            color: #b71c1c;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-message.info {
+            background: #fff8e1;
+            color: #e65100;
+            border: 1px solid #ffe0b2;
+        }
+
+        .status-message i {
+            font-size: 1.1rem;
+        }
+
+        .instructions {
+            background: #fef7f5;
+            border: 1px dashed #f0d9d9;
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .instructions h3 {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #4a2c2a;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instructions h3 i {
+            color: #d45b6b;
+        }
+
+        .instructions ol {
+            padding-left: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .instructions li {
+            font-size: 0.85rem;
+            color: #7a5a5a;
+            line-height: 1.4;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================================================
+           PAGE 5: SUCCESS
+           ============================================================ */
+        .success-card {
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 18px 35px -10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f1e2de;
+            padding: 2.8rem 2.5rem 2.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: #e8f5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            border: 2px solid #a5d6a7;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .success-icon i {
+            font-size: 3rem;
+            color: #2e7d32;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-card h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #1b5e20;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.5px;
+        }
+
+        .success-card .subtitle {
+            font-size: 1rem;
+            color: #8f6b6b;
+            margin-bottom: 2rem;
+        }
+
+        .transaction-summary {
+            background: #fefaf9;
+            border: 1.5px solid #eedbd6;
+            border-radius: 24px;
+            padding: 1.4rem 1.6rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .transaction-summary h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #9e7a7a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .transaction-summary h3 i {
+            color: #d45b6b;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed #f0d9d9;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .summary-row .label {
+            font-size: 0.9rem;
+            color: #9e7a7a;
+        }
+
+        .summary-row .value {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #2e1c1a;
+            text-align: right;
+        }
+
+        .summary-row .value.amount {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #d45b6b;
+            letter-spacing: -0.5px;
+        }
+
+        .summary-row .value.status-badge {
+            background: #e8f5e9;
+            color: #1b5e20;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .next-steps {
+            background: #fef7f5;
+            border: 1px dashed #f0d9d9;
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.8rem;
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #4a2c2a;
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .next-steps h3 i {
+            color: #d45b6b;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .next-steps ul li {
+            font-size: 0.86rem;
+            color: #7a5a5a;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .next-steps ul li i {
+            color: #2e7d32;
+            font-size: 0.8rem;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1.5px solid #e6d7d2;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a2c2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-secondary i {
+            color: #b3566b;
+            font-size: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: #fceaea;
+            border-color: #d45b6b;
+            transform: translateY(-1px);
+        }
+
+        /* ============================================================
+           SHARED FOOTER
+           ============================================================ */
+        .footer-note {
+            text-align: center;
+            padding: 2rem 1rem 1.5rem;
+            color: #a18181;
+            font-size: 0.9rem;
+            border-top: 1px solid #f0e0dc;
+            margin-top: 2rem;
+        }
+
+        .footer-note i {
+            color: #d45b6b;
+            margin: 0 4px;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 750px) {
+            .main-wrapper {
+                padding: 1rem 1.2rem 2rem;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+
+            .logo-area h1 {
+                font-size: 1.4rem;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-sub {
+                font-size: 1rem;
+            }
+
+            .couple-photo {
+                border-radius: 24px;
+            }
+
+            .register-card,
+            .profile-card,
+            .payment-card,
+            .success-card {
+                padding: 1.8rem 1.4rem;
+                border-radius: 30px;
+            }
+
+            .register-card h2,
+            .profile-header h2,
+            .payment-header h2,
+            .success-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .page-header h2 {
+                font-size: 1.7rem;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .package-card {
+                padding: 1.8rem 1.5rem;
+                border-radius: 28px;
+            }
+
+            .package-price .amount {
+                font-size: 2.2rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            .payment-summary {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+
+            .btn-pay,
+            .btn-primary {
+                font-size: 1rem;
+                padding: 0.9rem;
+            }
+
+            .success-icon {
+                width: 80px;
+                height: 80px;
+            }
+
+            .success-icon i {
+                font-size: 2.4rem;
+            }
+
+            .transaction-summary {
+                padding: 1.2rem;
+            }
+
+            .summary-row .value.amount {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .profile-header h2,
+            .page-header h2,
+            .success-card h2 {
+                font-size: 1.3rem;
+            }
+
+            .package-price .amount {
+                font-size: 1.9rem;
+            }
+
+            .popular-badge {
+                font-size: 0.65rem;
+                padding: 0.3rem 2.4rem;
+            }
+
+            .summary-row .value.amount {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         PAGE 1: HOME / REGISTER
+         ============================================================ -->
+    <div class="page active" id="page-home">
+        <div class="main-wrapper">
+            <header class="top-bar">
+                <div class="logo-area">
+                    <h1><i class="fa-regular fa-heart"></i> Ann Nafula G</h1>
+                    <div class="subhead">dating · love · connection</div>
+                </div>
+                <div class="auth-buttons" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+                    <a href="#" class="icon-btn" onclick="alert('🔐 Login clicked – welcome back! (demo)'); return false;">
+                        <i class="fa-regular fa-user"></i> Login
+                    </a>
+                    <a href="#" class="icon-btn register-btn" onclick="alert('✨ Create your account – email registration (demo)'); return false;">
+                        <i class="fa-regular fa-pen-to-square"></i> Register
+                    </a>
+                </div>
+            </header>
+
+            <section class="hero-section">
+                <h1 class="hero-title">Ann Nafula G <span>Dating Site</span></h1>
+                <div class="hero-sub">where hearts meet · authentic connections</div>
+
+                <div class="couple-photo">
+                    <img src="https://images.pexels.com/photos/1417255/pexels-photo-1417255.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                         alt="Happy couple in love, smiling together">
+                </div>
+                <div class="couple-caption">
+                    <i class="fa-solid fa-heart"></i> real couples · real stories <i class="fa-solid fa-heart"></i>
+                </div>
+            </section>
+
+            <div class="register-card">
+                <h2><i class="fa-regular fa-envelope"></i> Register with email</h2>
+                <p>Join Ann Nafula G and start your journey</p>
+
+                <form onsubmit="event.preventDefault(); goToProfile();">
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" placeholder="Full name" required>
+                        </div>
+                        <div class="input-field">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" placeholder="Email address" required>
+                        </div>
+                        <div class="input-field">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" placeholder="Create password" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-regular fa-heart"></i> Register now
+                    </button>
+
+                    <div class="login-redirect">
+                        Already have an account?
+                        <a href="#" onclick="alert('🔑 Login – use your email and password (demo)'); return false;">Login here</a>
+                    </div>
+                </form>
+                <div class="demo-hint">
+                    <i class="fa-regular fa-circle-check"></i> demo — use any email to preview
+                </div>
+            </div>
+
+            <div class="footer-note">
+                <i class="fa-regular fa-copyright"></i> 2025 Ann Nafula G Dating Site · find your person
+                <i class="fa-solid fa-heart" style="color:#d45b6b;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         PAGE 2: PROFILE DETAILS
+         ============================================================ -->
+    <div class="page" id="page-profile">
+        <div class="main-wrapper">
+            <header class="top-bar">
+                <div class="logo-area">
+                    <h1><i class="fa-regular fa-heart"></i> Ann Nafula G</h1>
+                    <div class="subhead">profile setup · step 2</div>
+                </div>
+                <a href="#" class="back-btn" onclick="showPage('home'); return false;">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+            </header>
+
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="avatar-icon">
+                        <i class="fa-regular fa-user"></i>
+                    </div>
+                    <h2>𝐊𝐈𝐍𝐃𝐋𝐘 𝐕𝐀𝐋𝐈𝐃𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐃𝐄𝐓𝐀𝐈𝐋𝐒</h2>
+                    <p><i class="fa-regular fa-pen-to-square"></i> please fill in accurately — all fields matter</p>
+                </div>
+
+                <form class="details-form" onsubmit="event.preventDefault(); goToPackages();">
+                    <div class="form-row">
+                        <label for="fullName"><i class="fa-regular fa-user"></i> 𝐍𝐚𝐦𝐞</label>
+                        <div class="input-field">
+                            <i class="fa-regular fa-signature"></i>
+                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="country"><i class="fa-solid fa-globe"></i> 𝐜𝐨𝐮𝐧𝐭𝐫𝐲</label>
+                        <div class="input-field">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <input type="text" id="country" placeholder="e.g., Kenya, Nigeria, South Africa" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <label for="age"><i class="fa-regular fa-calendar"></i> 𝐀𝐠𝐞</label>
+                            <div class="input-field">
+                                <i class="fa-regular fa-cake-candles"></i>
+                                <input type="number" id="age" placeholder="Age" min="18" max="99" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="kids"><i class="fa-solid fa-children"></i> 𝐤𝐢𝐝𝐬</label>
+                            <div class="input-field">
+                                <i class="fa-regular fa-child"></i>
+                                <select id="kids" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="0">No kids</option>
+                                    <option value="1">1 child</option>
+                                    <option value="2">2 children</option>
+                                    <option value="3">3 children</option>
+                                    <option value="4">4+ children</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="occupation"><i class="fa-solid fa-briefcase"></i> 𝐎𝐜𝐜𝐮𝐩𝐚𝐭𝐢𝐨𝐧</label>
+                        <div class="input-field">
+                            <i class="fa-regular fa-building"></i>
+                            <input type="text" id="occupation" placeholder="e.g., Teacher, Engineer, Business owner" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="hivStatus"><i class="fa-solid fa-notes-medical"></i> 𝐇𝐈𝐕 𝐬𝐭𝐚𝐭𝐮𝐬</label>
+                        <div class="input-field">
+                            <i class="fa-solid fa-shield-heart"></i>
+                            <select id="hivStatus" required>
+                                <option value="" disabled selected>Select status</option>
+                                <option value="negative">Negative</option>
+                                <option value="positive">Positive</option>
+                                <option value="undisclosed">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="validation-note">
+                        <i class="fa-regular fa-circle-check"></i> Please double-check your details before submitting
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="margin-top:0.8rem;margin-bottom:0;">
+                        <i class="fa-regular fa-heart"></i> Save &amp; continue
+                    </button>
+                </form>
+            </div>
+
+            <div class="footer-note">
+                <i class="fa-regular fa-copyright"></i> 2025 Ann Nafula G Dating Site · your privacy matters
+                <i class="fa-solid fa-heart" style="color:#d45b6b;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         PAGE 3: PACKAGES
+         ============================================================ -->
+    <div class="page" id="page-packages">
+        <div class="main-wrapper">
+            <header class="top-bar">
+                <div class="logo-area">
+                    <h1><i class="fa-regular fa-heart"></i> Ann Nafula G</h1>
+                    <div class="subhead">membership · step 3</div>
+                </div>
+                <a href="#" class="back-btn" onclick="showPage('profile'); return false;">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+            </header>
+
+            <div class="page-header">
+                <h2>Choose your <span>package</span></h2>
+                <p><i class="fa-solid fa-heart"></i> unlock meaningful connections with the plan that fits you <i class="fa-solid fa-heart"></i></p>
+            </div>
+
+            <div class="packages-grid">
+                <div class="package-card">
+                    <div class="package-icon">
+                        <i class="fa-regular fa-calendar"></i>
+                    </div>
+                    <div class="package-name">Monthly</div>
+                    <div class="package-desc">Try it out, month by month</div>
+
+                    <div class="package-price">
+                        <span class="currency">KSh</span>
+                        <span class="amount">650</span>
+                        <span class="period">/ month</span>
+                    </div>
+                    <div class="package-billing">billed monthly · cancel anytime</div>
+
+                    <ul class="features-list">
+                        <li><i class="fa-solid fa-check"></i> Full profile access</li>
+                        <li><i class="fa-solid fa-check"></i> Unlimited messaging</li>
+                        <li><i class="fa-solid fa-check"></i> See who likes you</li>
+                        <li><i class="fa-solid fa-check"></i> Basic search filters</li>
+                    </ul>
+
+                    <button class="btn-select" onclick="selectPlan('monthly')">
+                        <i class="fa-regular fa-circle-check"></i> Select monthly
+                    </button>
+                </div>
+
+                <div class="package-card popular">
+                    <div class="popular-badge">Best value</div>
+                    <div class="package-icon">
+                        <i class="fa-regular fa-star"></i>
+                    </div>
+                    <div class="package-name">Yearly</div>
+                    <div class="package-desc">Commit and save big</div>
+
+                    <div class="package-price">
+                        <span class="currency">KSh</span>
+                        <span class="amount">6,999</span>
+                        <span class="period">/ year</span>
+                    </div>
+                    <div class="package-billing">billed annually · save over 10%</div>
+
+                    <ul class="features-list">
+                        <li><i class="fa-solid fa-check"></i> Everything in Monthly</li>
+                        <li><i class="fa-solid fa-check"></i> Priority profile visibility</li>
+                        <li><i class="fa-solid fa-check"></i> Advanced compatibility filters</li>
+                        <li><i class="fa-solid fa-check"></i> Verified member badge</li>
+                    </ul>
+
+                    <button class="btn-select" onclick="selectPlan('yearly')">
+                        <i class="fa-regular fa-circle-check"></i> Select yearly
+                    </button>
+                </div>
+            </div>
+
+            <div class="trust-note">
+                <i class="fa-solid fa-lock"></i> secure payment · your privacy is protected
+            </div>
+
+            <div class="footer-note">
+                <i class="fa-regular fa-copyright"></i> 2025 Ann Nafula G Dating Site · invest in connection
+                <i class="fa-solid fa-heart" style="color:#d45b6b;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         PAGE 4: PAYMENT (STK PUSH)
+         ============================================================ -->
+    <div class="page" id="page-payment">
+        <div class="main-wrapper" style="max-width:700px;">
+            <header class="top-bar">
+                <div class="logo-area">
+                    <h1><i class="fa-regular fa-heart"></i> Ann Nafula G</h1>
+                    <div class="subhead">payment · step 4</div>
+                </div>
+                <a href="#" class="back-btn" onclick="showPage('packages'); return false;">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+            </header>
+
+            <div class="payment-card">
+                <div class="payment-header">
+                    <div class="mpesa-icon">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                    </div>
+                    <h2>M-Pesa STK Push</h2>
+                    <p>Enter your M-Pesa number to receive a payment prompt</p>
+                </div>
+
+                <div class="payment-summary">
+                    <div>
+                        <div class="summary-label">Selected plan</div>
+                        <div class="summary-plan" id="planName">Monthly Membership</div>
+                    </div>
+                    <div class="summary-amount" id="planAmount">KSh 650</div>
+                </div>
+
+                <form class="payment-form" id="paymentForm" onsubmit="handlePayment(event)">
+                    <div class="form-row">
+                        <label for="phone"><i class="fa-solid fa-phone"></i> M-Pesa phone number</label>
+                        <div class="input-field">
+                            <span class="prefix">+254</span>
+                            <input type="tel" id="phone" placeholder="712345678" maxlength="9" pattern="[0-9]{9}" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-pay" id="payBtn">
+                        <i class="fa-solid fa-paper-plane"></i> Send STK push
+                    </button>
+
+                    <div class="status-message" id="statusMessage"></div>
+                </form>
+
+                <div class="instructions">
+                    <h3><i class="fa-regular fa-lightbulb"></i> How it works</h3>
+                    <ol>
+                        <li>Enter your Safaricom M-Pesa number above.</li>
+                        <li>Click "Send STK push" — you'll receive a prompt on your phone.</li>
+                        <li>Enter your M-Pesa PIN to confirm the payment.</li>
+                        <li>You'll get a confirmation once the payment is complete.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                <i class="fa-regular fa-copyright"></i> 2025 Ann Nafula G Dating Site · secure M-Pesa payment
+                <i class="fa-solid fa-heart" style="color:#d45b6b;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         PAGE 5: PAYMENT SUCCESS
+         ============================================================ -->
+    <div class="page" id="page-success">
+        <div class="main-wrapper" style="max-width:650px;">
+            <header class="top-bar">
+                <div class="logo-area">
+                    <h1><i class="fa-regular fa-heart"></i> Ann Nafula G</h1>
+                    <div class="subhead">payment · confirmation</div>
+                </div>
+            </header>
+
+            <div class="success-card">
+                <div class="success-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <h2>Payment Successful!</h2>
+                <p class="subtitle">Your membership is now active. Welcome to Ann Nafula G.</p>
+
+                <div class="transaction-summary">
+                    <h3><i class="fa-solid fa-receipt"></i> Transaction details</h3>
+
+                    <div class="summary-row">
+                        <span class="label">Plan</span>
+                        <span class="value" id="summaryPlan">Monthly Membership</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="label">Amount paid</span>
+                        <span class="value amount" id="summaryAmount">KSh 650</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="label">Phone number</span>
+                        <span class="value" id="summaryPhone">+254 712 345 678</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="label">Transaction ID</span>
+                        <span class="value" id="summaryTxnId">QGH7X9K2LM</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="label">Date &amp; time</span>
+                        <span class="value" id="summaryDate">07 Nov 2026, 14:32</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="label">Status</span>
+                        <span class="value status-badge">
+                            <i class="fa-solid fa-circle-check" style="font-size:0.7rem;"></i> Paid
+                        </span>
+                    </div>
+                </div>
+
+                <div class="next-steps">
+                    <h3><i class="fa-regular fa-lightbulb"></i> What happens next</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> Your profile is now visible to other members.</li>
+                        <li><i class="fa-solid fa-check"></i> You can send and receive unlimited messages.</li>
+                        <li><i class="fa-solid fa-check"></i> A receipt has been sent to your email.</li>
+                        <li><i class="fa-solid fa-check"></i> Start browsing matches and make a connection!</li>
+                    </ul>
+                </div>
+
+                <a href="#" class="btn-primary" onclick="alert('Taking you to your dashboard (demo)'); return false;">
+                    <i class="fa-regular fa-heart"></i> Go to my dashboard
+                </a>
+
+                <a href="#" class="btn-secondary" onclick="showPage('profile'); return false;">
+                    <i class="fa-regular fa-user"></i> Complete my profile
+                </a>
+            </div>
+
+            <div class="footer-note">
+                <i class="fa-regular fa-copyright"></i> 2025 Ann Nafula G Dating Site · thank you for joining
+                <i class="fa-solid fa-heart" style="color:#d45b6b;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         JAVASCRIPT: ROUTER & LOGIC
+         ============================================================ -->
+    <script>
+        /* ---------- Plan state ---------- */
+        const plans = {
+            monthly: { name: 'Monthly Membership', amount: 'KSh 650' },
+            yearly:  { name: 'Yearly Membership',  amount: 'KSh 6,999' }
+        };
+        let selectedPlan = 'monthly';
+        let selectedPhone = '712345678';
+
+        /* ---------- Page router ---------- */
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(function (page) {
+                page.classList.remove('active');
+            });
+            const target = document.getElementById('page-' + pageId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        /* ---------- Navigation helpers ---------- */
+        function goToProfile() {
+            showPage('profile');
+        }
+
+        function goToPackages() {
+            showPage('packages');
+        }
+
+        /* ---------- Package selection ---------- */
+        function selectPlan(planKey) {
+            selectedPlan = planKey;
+            const plan = plans[planKey];
+
+            // Update payment page summary
+            document.getElementById('planName').textContent = plan.name;
+            document.getElementById('planAmount').textContent = plan.amount;
+
+            // Reset status message when entering payment page
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.className = 'status-message';
+            statusMessage.innerHTML = '';
+
+            showPage('payment');
+        }
+
+        /* ---------- Payment (STK Push) ---------- */
+        const payBtn = document.getElementById('payBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const phoneInput = document.getElementById('phone');
+
+        // Format phone input (digits only, max 9)
+        phoneInput.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 9);
+        });
+
+        function showStatus(type, message, icon) {
+            statusMessage.className = 'status-message show ' + type;
+            statusMessage.innerHTML = '<i class="' + icon + '"></i> ' + message;
+        }
+
+        function clearStatus() {
+            statusMessage.className = 'status-message';
+            statusMessage.innerHTML = '';
+        }
+
+        async function handlePayment(event) {
+            event.preventDefault();
+            clearStatus();
+
+            const phone = phoneInput.value.trim();
+
+            if (!/^[0-9]{9}$/.test(phone)) {
+                showStatus('error', 'Please enter a valid 9-digit M-Pesa number.', 'fa-solid fa-circle-exclamation');
+                return;
+            }
+
+            const fullPhone = '254' + phone;
+            selectedPhone = phone;
+
+            payBtn.disabled = true;
+            payBtn.innerHTML = '<span class="spinner"></span> Sending STK push...';
+
+            showStatus('info', 'Sending STK push to +' + fullPhone + '... please wait.', 'fa-solid fa-circle-info');
+
+            try {
+                // ============================================================
+                // DEMO SIMULATION — replace with real Daraja API call
+                // ============================================================
+                await new Promise(function (resolve) { setTimeout(resolve, 2500); });
+
+                showStatus(
+                    'success',
+                    'STK push sent to +' + fullPhone + '! Enter your M-Pesa PIN on your phone to complete.',
+                    'fa-solid fa-circle-check'
+                );
+
+                // Wait a moment, then go to success page
+                await new Promise(function (resolve) { setTimeout(resolve, 1800); });
+                goToSuccess();
+
+            } catch (error) {
+                showStatus('error', 'Something went wrong. Please try again.', 'fa-solid fa-circle-exclamation');
+                console.error('Payment error:', error);
+            } finally {
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send STK push';
+            }
+        }
+
+        /* ---------- Success page population ---------- */
+        function goToSuccess() {
+            const plan = plans[selectedPlan];
+
+            // Plan & amount
+            document.getElementById('summaryPlan').textContent = plan.name;
+            document.getElementById('summaryAmount').textContent = plan.amount;
+
+            // Phone (formatted)
+            const p = selectedPhone;
+            document.getElementById('summaryPhone').textContent =
+                '+254 ' + p.slice(0, 3) + ' ' + p.slice(3, 6) + ' ' + p.slice(6);
+
+            // Transaction ID
+            const txnId = 'QGH' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            document.getElementById('summaryTxnId').textContent = txnId;
+
+            // Date & time
+            const now = new Date();
+            const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+            document.getElementById('summaryDate').textContent = now.toLocaleDateString('en-GB', options).replace(',', ' ·');
+
+            showPage('success');
+        }
+
+        /* ---------- Init: ensure payment summary matches default plan ---------- */
+        document.getElementById('planName').textContent = plans.monthly.name;
+        document.getElementById('planAmount').textContent = plans.monthly.amount;
+    </script>
+</body>
+</html>
